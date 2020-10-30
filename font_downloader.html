@@ -1,0 +1,36 @@
+<script type="text/javascript">
+var serverPath = 'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap';
+var url_list = [];
+
+var loadHtml = function(path, callback) {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', path, true);
+     xhr.onreadystatechange = function() {
+       if (this.readyState !== 4) return;
+       if (this.status !== 200) return;
+       callback(this.responseText);
+     };
+     xhr.send();
+};
+
+var displayHtml = function() {
+     loadHtml(serverPath, function(html) {
+     	var regex = /(http(s)?:\/\/|www.)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}([\/a-z0-9-%#?&=\.w])+(\.[a-z0-9]{2,4}(\?[\/a-z0-9-%#?&=\w]+)*)*/gi;
+     	url_list = html.match(regex);
+     	for (var i=0; i<url_list.length; i++)
+     	{
+     		document.write(url_list[i]+"\n");
+     		//download_file(url_list[i]);   //폰트 라이브러리 다운로드
+
+     	}
+     	});
+     return false;
+};
+
+var download_file = function(url) {
+      window.open(url);
+    }
+
+</script>
+<button onclick="displayHtml('index.html');">Load html</button>
+<div class="page_content"></div>

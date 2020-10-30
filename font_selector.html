@@ -1,0 +1,61 @@
+<script type="text/javascript">
+var serverPath = 'https://cdn.jsdelivr.net/npm/typeface-nanum-square-round@1.0.2/nanumsquareround.css';
+var url_list = [];
+var url = "";
+
+var loadHtml = function(path, callback) {
+     var xhr = new XMLHttpRequest();
+     xhr.open('GET', path, true);
+     xhr.onreadystatechange = function() {
+       if (this.readyState !== 4) return;
+       if (this.status !== 200) return;
+       callback(this.responseText);
+     };
+     xhr.send();
+};
+
+var displayHtml = function(input) {
+     loadHtml(serverPath, function(html) {
+     	for (var i=5; i<html.length-5; i++)
+     	{
+            url = "";
+            if(html[i-5]=='u'&&html[i-4]=='r'&&html[i-3]=='l'){
+                for(var j=i;j<html.length;j++)
+                {
+                    if(html[j]==")"){
+                        url = url.substr(0, url.length -1);
+                        url_list.push(url)
+                        break;
+                    }
+                    url += html[j];
+                }
+            }
+     	}
+        for (var i=0; i<url_list.length; i++)
+        {
+            //document.write(url_list[i]+"\n");
+        }
+        if(input<url_list){
+            document.write(url_list[input]);
+            download_file(url_list[input]);   //폰트 라이브러리 다운로드
+        }
+     	});
+     return false;
+};
+
+var download_file = function(url) {
+      window.open(url);
+    }
+
+function input(){
+    const input = document.getElementById('input').value;
+    displayHtml(input);
+}
+
+</script>
+<button onclick="displayHtml('index.html');">Load html</button><br>
+<text>다운 받을 라이브러리 번호 :</text>
+​ <input type="text" id="input">
+<button onclick="input();">Download</button>
+
+
